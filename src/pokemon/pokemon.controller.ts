@@ -27,15 +27,8 @@ export class PokemonController {
   ): Promise<PokemonBrief> {
     if (!pokemonId) throw new ParametersNeeded();
 
-    const response = await this.pokemonService.getPokemonBrief(pokemonId);
-
-    const pokemonBrief: PokemonBrief = new PokemonBrief(
-      response['id'],
-      response['name'],
-      response['sprites']['other']['home']['front_default'],
-      response['types'].map((typeEntry) => typeEntry['type']['name']),
-    );
-
-    return pokemonBrief;
+    const response: PokemonBrief =
+      await this.pokemonService.getPokemonBrief(pokemonId);
+    return response;
   }
 }
