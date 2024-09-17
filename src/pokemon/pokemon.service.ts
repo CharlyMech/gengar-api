@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PokemonBrief } from './pokemon.types';
 import { getPokemonColor } from 'src/common/utils/color.utils';
+import { ParameterNotFound } from 'src/common/errors';
 
 @Injectable()
 export class PokemonService {
@@ -16,6 +17,9 @@ export class PokemonService {
       fetch(`${this.baseUrl}/${pokemonId}`),
       fetch(`${this.speciesUrl}/${pokemonId}`),
     ]);
+    if (!baseResponse.ok || !speciesResponse.ok)
+      throw new ParameterNotFound('Pokemon or PokemonSpecies', `${pokemonId}`);
+
     const baseData = await baseResponse.json();
     const speciesData = await speciesResponse.json();
 

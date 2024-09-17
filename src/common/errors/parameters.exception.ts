@@ -12,3 +12,16 @@ export class ParametersNeeded extends HttpException {
     );
   }
 }
+
+export class ParameterNotFound extends HttpException {
+  constructor(from: string, value: string) {
+    super(
+      {
+        statusCode: HttpStatus.NOT_FOUND,
+        error: 'Not found',
+        message: `The parameter ${value} is not found on ${from} context`,
+      },
+      HttpStatus.NOT_FOUND,
+    );
+  }
+}

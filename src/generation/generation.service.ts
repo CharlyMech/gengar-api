@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Generation } from './generation.types';
 import { PokemonService } from 'src/pokemon/pokemon.service';
+import { ParameterNotFound } from 'src/common/errors';
 
 @Injectable()
 export class GenerationService {
@@ -15,6 +16,8 @@ export class GenerationService {
 
   async getGeneration(id: number): Promise<Generation> {
     const response = await fetch(`${this.baseUrl}/${id}`);
+    if (!response.ok) throw new ParameterNotFound('Generations', `${id}`);
+
     const data = await response.json();
     const pokemonIds = data['pokemon_species'].map((specie) =>
       specie['url'].split('/').at(-2),
